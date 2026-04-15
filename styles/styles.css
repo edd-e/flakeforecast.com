@@ -39,6 +39,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: "DM Mono", monospace;
+  transition: background-color 6s var(--transition-ease);
 }
 
 body::before {
@@ -469,12 +470,7 @@ h1 em {
   padding: 0 24px;
 }
 
-/* Content animation re-triggered by JS on each reveal */
-#result.visible {
-  animation: revealResult 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-/* Name — always visible; colour reflects verdict */
+/* Name — typed in via JS */
 .flake-name {
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(2.2rem, 8vw, 5rem);
@@ -482,7 +478,7 @@ h1 em {
   font-style: italic;
   line-height: 1;
   letter-spacing: -0.02em;
-  animation: flickerIn 0.6s ease both;
+  min-height: 1em;
 }
 
 .flake-name.yes {
@@ -492,27 +488,18 @@ h1 em {
   color: var(--accent);
 }
 
-@keyframes flickerIn {
-  0% {
-    opacity: 0;
-    transform: scale(1.08);
-  }
-  40% {
-    opacity: 0.6;
-  }
-  60% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 0.7;
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+/* Verdict phrase — shorter text, italic Playfair */
+.verdict,
+.outcome-text {
+  opacity: 0;
 }
 
-/* Verdict phrase — shorter text, italic Playfair */
+.verdict.visible,
+.outcome-text.visible {
+  opacity: 1;
+  transition: opacity 0.8s var(--transition-ease);
+}
+
 .verdict {
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(1.8rem, 5vw, 3rem);
@@ -536,6 +523,9 @@ h1 em {
   color: var(--text);
   line-height: 1.7;
   max-width: 40ch;
+}
+
+.outcome-text.visible {
   opacity: 0.85;
 }
 
@@ -617,17 +607,6 @@ body.no-bg {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes revealResult {
-  from {
-    opacity: 0;
-    transform: scale(0.93) translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
   }
 }
 

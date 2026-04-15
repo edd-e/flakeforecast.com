@@ -129,7 +129,7 @@ const instructions = [
   "Measure the social visibility:",
   "Assess the social freeze:",
   "Monitor the group chat pressure:",
-  "Calculate the ghosting trajectory:",
+  "Calculate the probability of ghosting:",
   "Observe the flake-formation:",
   "Scan the commitment horizon:",
   "Evaluate the social pressure:",
@@ -400,7 +400,7 @@ const PEOPLE = {
     responses: {
       flake: [
         "Even royalty cancels sometimes. This is one of those rare times.",
-        "Queen has a conflict. A very important, very vague conflict.",
+        "Queen has a time conflict. A very important, very unavoidable conflict.",
         "The Queens' court has been cancelled. Rescheduling is not on the agenda.",
         "Queen sends her best wishes. You tried.",
       ],
@@ -492,7 +492,7 @@ const NO_FLAKE_PHRASES = [
   "rare non-flake",
   "flakeless wonder",
   "solid, no-flake",
-  "verifiably non-flake",
+  "reliably not a flake",
   "zero-percent flake",
   "'never call me' flake",
   "certified non-flake",
@@ -582,32 +582,53 @@ async function reveal() {
 
   await Promise.all([aiCall, minDelay]);
 
-  // Populate result content
+  // Populate result content — name typed, rest sequential
   verdictWord.textContent = pickPhrase(isFlake);
   verdictWord.className = "verdict " + (isFlake ? "yes" : "no");
+  verdictWord.classList.remove("visible");
   outcomeText.textContent = flavorText;
+  outcomeText.classList.remove("visible");
 
-  flakeNameTxt.textContent = name;
+  flakeNameTxt.textContent = "";
   flakeNameTxt.className = "flake-name " + (isFlake ? "yes" : "no");
 
   document.body.classList.remove("yes-bg", "no-bg");
-  document.body.classList.add(isFlake ? "yes-bg" : "no-bg");
 
-  // Transition to result screen; re-trigger content animation
   showScreen("result");
-  resultEl.classList.remove("visible");
-  void resultEl.offsetWidth; // force reflow to re-run animation
-  resultEl.classList.add("visible");
 
+  // Typewrite the name, then chain the remaining elements
+  let i = 0;
+  const typeNext = () => {
+    if (i < name.length) {
+      flakeNameTxt.textContent += name[i++];
+      setTimeout(typeNext, 160);
+    } else {
+      setTimeout(() => {
+        verdictWord.classList.add("visible");
+        document.body.classList.add(isFlake ? "yes-bg" : "no-bg");
+        setTimeout(() => {
+          outcomeText.classList.add("visible");
+          setTimeout(() => resetBtn.classList.add("visible"), 3000);
+        }, 1500);
+      }, 1500);
+    }
+  };
   resetBtn.classList.remove("visible");
-  setTimeout(() => resetBtn.classList.add("visible"), 3000);
+  typeNext();
 }
 
 // ── Reset ─────────────────────────────────────────────────────────────
 function reset() {
   resultEl.classList.remove("visible");
   resetBtn.classList.remove("visible");
+  verdictWord.classList.remove("visible");
+  outcomeText.classList.remove("visible");
+  document.body.style.transition =
+    "background-color 5s cubic-bezier(0.16, 1, 0.3, 1)";
   document.body.classList.remove("yes-bg", "no-bg");
+  setTimeout(() => {
+    document.body.style.transition = "";
+  }, 2000);
 
   showScreen("hero");
 
@@ -634,11 +655,14 @@ const screenHero = document.getElementById("screen-hero");
 const screenResult = document.getElementById("screen-result");
 
 eventInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && screenHero.classList.contains("screen--active")) reveal();
+  if (e.key === "Enter" && screenHero.classList.contains("screen--active"))
+    reveal();
 });
 nameInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && screenHero.classList.contains("screen--active")) reveal();
+  if (e.key === "Enter" && screenHero.classList.contains("screen--active"))
+    reveal();
 });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && screenResult.classList.contains("screen--active")) reset();
+  if (e.key === "Enter" && screenResult.classList.contains("screen--active"))
+    reset();
 });
