@@ -33,7 +33,7 @@
           <div class="cell--main">
             <section id="hero">
               <span class="eyebrow">
-                <span class="eyebrow-static">Oracle of</span>
+                <span class="eyebrow-static">The social forecast of</span>
                 <span class="word-slot" id="word-slot">
                   <span class="word-slot-inner" id="word-slot-inner"
                     >Reliability</span
@@ -44,19 +44,10 @@
               <h1>Will <em id="h1-name">my friend</em> flake?</h1>
 
               <div class="rule"></div>
-              <p class="sub">consult the oracle before making plans</p>
-
-              <div class="select-wrap">
-                <select id="person-select">
-                  <option value="friend">My Friend</option>
-                  <option value="dragon">Dragon</option>
-                  <option value="queen">Queen</option>
-                  <option value="eddie">Eddie</option>
-                </select>
-              </div>
+              <p class="sub">Check the social forecast.</p>
 
               <div class="input-row">
-                <div class="field" id="name-field">
+                <div class="field">
                   <label for="name-input">their name</label>
                   <input
                     id="name-input"
@@ -65,6 +56,7 @@
                     placeholder="e.g. Alex"
                     autocomplete="off"
                     spellcheck="false"
+                    required
                   />
                 </div>
                 <div class="field">
@@ -73,14 +65,14 @@
                     id="event-input"
                     type="text"
                     maxlength="80"
-                    placeholder="e.g. beach outing"
+                    placeholder="e.g. dinner outing"
                     autocomplete="off"
                     spellcheck="false"
                   />
                 </div>
               </div>
 
-              <button id="tap-btn"><span>tap me</span></button>
+              <button id="tap-btn"><span>tap me!</span></button>
             </section>
           </div>
 
@@ -132,11 +124,10 @@
 
           <div class="cell--main">
             <section id="result" aria-live="polite">
-              <span class="verdict-label">The oracle decrees</span>
               <div class="flake-name" id="flake-name-text"></div>
               <div class="verdict" id="verdict-word"></div>
               <p class="outcome-text" id="outcome-text"></p>
-              <button id="reset-btn">ask again</button>
+              <button id="reset-btn"><span>ask again</span></button>
             </section>
           </div>
 

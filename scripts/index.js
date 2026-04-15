@@ -22,29 +22,28 @@ function showScreen(name) {
 // CYCLING EYEBROW WORD  (unchanged)
 // ═══════════════════════════════════════════════════════════════════════
 const WORDS = [
-  "Reliability",
+  "Promises",
   "Flakiness",
+  "Reliability",
+  "Excuses",
+  "Deception",
   "Friendship",
+  "Chaos",
+  "Cancellations",
   "Truth",
+  "Hope",
+  "Loyalty",
+  "Ghosts",
   "Commitment",
   "Punctuality",
-  "Excuses",
-  "Chaos",
-  "Promises",
-  "Loyalty",
+  "Audacity",
   "Vibes",
-  "Deception",
-  "Cancellations",
-  "Hope",
-  "Delusion",
   "Character",
   "Tardiness",
-  "Audacity",
-  "Memory",
-  "Nerve",
   "Good Intentions",
+  "Miracles",
+  "Nerve",
   "Accountability",
-  "Ghosts",
 ];
 
 const wordSlot = document.getElementById("word-slot");
@@ -55,7 +54,7 @@ probe.style.cssText =
   "position:absolute;visibility:hidden;white-space:nowrap;" +
   "font-size:11px;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;" +
   'font-family:"DM Mono",monospace;';
-document.body.appendChild(probe);
+document.getElementById("app").appendChild(probe);
 
 function measureWord(w) {
   probe.textContent = w;
@@ -89,6 +88,76 @@ function cycleWord() {
 
 setInterval(cycleWord, 3200);
 
+const instructions = [
+  "Check the flakiness radar:",
+  "Scan the horizon for excuses:",
+  "Gauge the probability of presence:",
+  "Calculate the probability of ghosting:",
+  "Assess the commitment climate:",
+  "Predict the plan's chance of success:",
+  "Analyze the group chat atmosphere:",
+  "Detect the flake:",
+  "Monitor the incoming excuse-front:",
+  "Launch the social weather balloon:",
+  "Determine the 'Maybe' pressure:",
+  "Update the attendance outlook:",
+  "Review the reliability forecast:",
+  "Observe the flake-dar:",
+  "Scan for incoming radio silence:",
+  "Forecast the social fallout:",
+  "Detect the social cold front:",
+  "Track the migration of the hermit:",
+  "Pinpoint the social epicenter:",
+  "Read the social altimeter:",
+  "Calibrate the flakiness sensors:",
+  "Initiate the presence scan:",
+  "Detect social turbulence:",
+  "Observe the RSVP cloud cover:",
+  "Calculate the friction of personalities:",
+  "Measure the gravity of the couch:",
+  "Check the social UV index:",
+  "Quantify the social exhaustion:",
+  "Predict the 'I'm tired' storm:",
+  "Assess the 'going out stress' test:",
+  "Factor in the comfort-zone climate:",
+  "Check the commitment compass:",
+  "Measure the density of the excuse:",
+  "Forecast the unforeseen events:",
+  "Gauge the social sunlight:",
+  "Track the 'I'll try' excuses:",
+  "Detect the 'can't make it' hurricane:",
+  "Measure the social visibility:",
+  "Assess the social freeze:",
+  "Monitor the group chat pressure:",
+  "Calculate the ghosting trajectory:",
+  "Observe the flake-formation:",
+  "Scan the commitment horizon:",
+  "Evaluate the social pressure:",
+  "Check the attendance barometer:",
+  "Analyze the social ecosystem:",
+  "Measure the social magnetic field:",
+  "Forecast the vibe shift:",
+  "Predict the excuse-velocity:",
+  "Scan for social anomalies:",
+  "Check the flake-alert system:",
+  "Evaluate the flake-density:",
+  "Analyze the social forecast data:",
+  "Predict the social ice age:",
+  "Scan the 'maybe' mist:",
+  "Forecast the group chat drought:",
+  "Observe the social orbit:",
+  "Calculate the social drag:",
+  "Measure the flake-frequency:",
+  "Assess the commitment probability:",
+  "Predict the social lightning strike:",
+  "Scan the social topography:",
+  "Gauge the social depth:",
+  "Pierce the fog of uncertainty:",
+  "Monitor the excuse-horizon:",
+  "Read the stars for flake prediction:",
+  "Finalize the social outlook:",
+];
+
 // ═══════════════════════════════════════════════════════════════════════
 // PEOPLE CONFIG  (unchanged)
 // ═══════════════════════════════════════════════════════════════════════
@@ -100,77 +169,267 @@ const PEOPLE = {
     responses: {
       flake: [
         "Their phone is already on silent. They're not coming.",
-        "They said 'I'll try to make it.' That's always a no.",
+        "They said 'I'll try to make it!'... That's always a no.",
         "Something will come up. It always comes up. It is, in fact, currently coming up.",
-        "Their Uber is 'three minutes away.' It will remain three minutes away forever.",
+        "Can't make it at all and won't propose alternate plans.",
         "History is the best predictor of the future. History says no.",
+        "Their bed will win the custody battle for their soul.",
+        "Will be 'putting on pajamas' right as the event starts.",
+        "A 10/10 chance they won't leave the couch.",
+        "They will suddenly realize they 'have no clothes,' despite a full closet.",
+        "Will start a movie they won't finish and ignore the 'where you at?' text.",
+        "The social battery will hit 0% by the time they need to start getting ready.",
+        "Will look at the front door and decide 'not today, Satan.'",
+        "Their house will feel way too cozy to leave.",
+        "Will blame a 'long week' even if it’s only Tuesday.",
+        "A sudden, unexplained exhaustion will strike them at the worst moment.",
+        "They will 'accidentally' fall asleep for a long nap.",
+        "Will be busy staring at a wall wondering why they agreed to this.",
+        "Will 'forget' to check their notifications.",
+        "Will find a reason to reorganize their kitchen instead.",
+        "Their cat/dog will look too cute to move, and they’ll stay.",
+        "They will decide that 'outside' is a scam.",
+        "Will fall into an internet rabbit hole for hours.",
+        "Will be lost to doom-scrolling.",
+        "A 'quiet night in' will beat your plans in a landslide victory.",
+        "Will convince themselves that nobody actually wants them there anyway.",
+        "Will realize they haven't washed their hair and call it a day.",
+        "The 'leaving' process will prove too mentally taxing.",
+        "Will be 'getting ready' in spirit only.",
+        "Will choose a solo pizza over a social outing.",
+        "Will decide to save money by staying in.",
+        "Their social anxiety will enter the chat. It will win.",
+        "Will claim their car is making a 'weird noise.'",
+        "A 'family thing' will miraculously manifest out of thin air.",
+        "Will say they’re 'waiting for a package' that requires a signature.",
+        "Will develop a well-timed, headache.",
+        "Will claim they 'didn't see the invite' (they definitely saw it).",
+        "Will pretend their phone died.",
+        "Will blame the traffic.",
+        "Will say they have to 'wake up early' for something vague.",
+        "Will claim they’re 'still at work'.",
+        "Will say they’re 'feeling under the weather' (the weather is fine).",
+        "Will cite a 'sudden plumbing emergency.'",
+        "Will pretend they have 'guests coming over' unexpectedly.",
+        "Will claim they 'already have plans' (the plans are Netflix).",
+        "Will blame a 'deadline' that doesn't exist.",
+        "Will say they’re 'just waiting on a call' that won't come.",
+        "Will claim they 'misread the date' in the group chat.",
+        "Will say they 'can't find their keys'.",
+        "Will claim they 'need to finish chores' first.",
+        "Will blame a 'migraine' that only affects social events.",
+        "Will say they 'didn't think it was still happening.'",
+        "Will claim they 'double-booked' themselves.",
+        "Will claim they’re 'not feeling the vibe' today.",
+        "Will say they 'ran out of gas' metaphorically and literally.",
+        "They will leave you on 'read'.",
+        "The typing bubbles will appear... and then vanish forever.",
+        "Will look at the text, sigh, and put the phone face down.",
+        "You’ll see them posting on their story while ignoring your DM.",
+        "Will respond three days later with 'omg so sorry just saw this!'",
+        "Will 'like' the message but never actually show up.",
+        "Their location will remain stubbornly at home all night.",
+        "Will 'be there in 10,' which is code for 'I haven't showered.'",
+        "They will vanish into the witness protection program for the evening.",
+        "Will 'let you know soon' and never report back.",
+        "Will send a 'see you soon!' and then never be seen again.",
+        "Their phone will conveniently enter 'Do Not Disturb' mode.",
+        "Will become a ghost in the group chat.",
+        "Will dodge your calls like a professional athlete.",
+        "Will claim they 'passed out' at 7 PM.",
+        "Will ask 'who else is going?' before deciding not to go.",
+        "Will say 'keep me posted!' which is the universal sign for no.",
+        "Will ask for all the details again just to look interested.",
+        "Will wait until you're already there to say they can't make it.",
+        "Will send a very long, overly-detailed apology text at 2 AM.",
+        "Will react with a 'thumbs up' and then disappear.",
+        "Will say 'maybe' and we all know what that means.",
+        "Will pretend they 'never got the notification.'",
+        "Will be 'super busy' doing absolutely nothing.",
+        "Will just... not.",
+        "They were never coming. You knew it. They knew it.",
+        "They only said yes to avoid the immediate awkwardness.",
+        "Will check the weather, see a cloud, and cancel.",
+        "Their social battery is currently at 1%.",
+        "They’d rather walk on Legos than leave the house right now.",
+        "Will find a reason to be offended by the plan.",
+        "Will decide the parking situation is too stressful.",
+        "Will realize they don't actually like the activity.",
+        "Will stay home to 'save their energy' for something else.",
+        "Will wait for someone else to cancel first so they don't feel bad.",
+        "Will realize the commute is 15 minutes and decide it's too far.",
+        "Will think about the small talk and choose silence instead.",
+        "Will convince themselves that 'next time' will be better.",
+        "Will be 'too tired' despite doing nothing all day.",
+        "Will let the group chat die before committing.",
+        "Their commitment level is currently 'absolute zero.'",
+        "Will choose a book over people every single time.",
+        "Will decide to 'reset' their life by sleeping.",
+        "Will talk themselves out of it while putting on their shoes.",
+        "Will sit in their car for 10 minutes and then drive back home.",
+        "Will see the 'left on read' and feel no guilt.",
+        "Will realize they haven't done laundry and 'have nothing to wear.'",
+        "Will flake, and they won't even have a good reason.",
+        "They’re staying home. Accept it. Move on.",
       ],
       show: [
-        "They're actually coming. Don't ask questions. Just enjoy it.",
-        "Shockingly, the stars have aligned in your favour.",
-        "Mark the calendar. This one's a keeper.",
-        "They confirmed. Twice. And they meant it.",
-        "They're already in the car. Do not jinx this.",
+        "Actually coming. Don't ask questions. Just enjoy it.",
+        "Coming! the stars have aligned in your favor.",
+        "Mark the calendar. This one's happening.",
+        "Will confirm. And mean it.",
+        "Will be the first one there.",
+        "Will be checking the menu before arriving.",
+        "Will arrive exactly 5 minutes early.",
+        "Will be there, and bring the good vibes.",
+        "Already locked and loaded.",
+        "Will be texting 'I'm here' before anyone else.",
+        "Will be already in the Uber/car.",
+        "Will show up with a smile and a story.",
+        "Wouldn't miss this for the world.",
+        "Will be there, rain or shine.",
+        "Will be actually looking forward to this.",
+        "Will be the life of the party.",
+        "Already has an outfit.",
+        "Will arrive with snacks.",
+        "Will be there, and be on time.",
+        "Will be the last one to leave.",
+        "Will be bringing their A-game.",
+        "Will show up and make everyone laugh.",
+        "Will counting down the minutes.",
+        "Will be there before you even arrive.",
+        "Will be the first one there and scoping out the place.",
+        "Will show up and save the day.",
+        "Is a person of their word. They’ll be there.",
+        "If they said yes, they meant it.",
+        "Will show up even if they’re tired.",
+        "Will be the 'mom/dad' of the group; of course they're coming.",
+        "Will be there to document everything on their story.",
+        "Will be coming, and bringing a 'plus one.'",
+        "Will show up and stay until the very end.",
+        "Will be coming to make sure you actually show up.",
+        "Will be there, even if you change your mind.",
+        "Will be coming because they actually value your friendship.",
+        "Will be coming, and bringing all the good energy.",
+        "Will show up and be the 'responsible one.'",
+        "Will be coming to see everyone they haven't seen in ages.",
+        "Will be there to make sure the 'flake' doesn't win.",
+        "Will be coming because they need a good time out.",
+        "Will show up and be the first to start the fun.",
+        "Will be coming, and they’ve already booked the Uber.",
+        "Will be there to hear all the gossip.",
+        "Will be coming because they actually like the plan.",
+        "Will show up and be the MVP of the outing.",
+        "Will be there, no excuses.",
+        "Will be coming, and is ready to party.",
+        "Will show up and make it a night to remember.",
+        "Will be already hyping everyone up in the group chat.",
+        "Will be coming because they’ve been bored all week.",
+        "Will be there to take all the photos.",
+        "Will be coming, and they’re bringing a bottle of something.",
+        "Will show up and be the most dressed-up person there.",
+        "Will be coming because they genuinely love this group.",
+        "Will be there to make sure everyone has a drink.",
+        "Will be coming, and they’re bringing the music.",
+        "Will show up and be the person everyone wants to talk to.",
+        "Will be coming because they need to vent about their week.",
+        "Will be there to support you, no matter what.",
+        "Will be coming because they love a good gathering.",
+        "Will show up and be the one to order the appetizers.",
+        "Will be coming, and they’ve already planned their exit strategy.",
+        "Will be there for the vibes.",
+        "Will be coming because they promised, and they keep promises.",
+        "Will show up and be the most enthusiastic person there.",
+        "Will be coming, and they’re ready for anything.",
+        "Will be there to help you clean up afterward.",
+        "Will be coming because they want to make memories.",
+        "Will show up and be the reason the night is a success.",
+        "Will be coming, and they’re bringing their best self.",
+        "Will be there, and they’ll be glad they came.",
+        "Will be sneaking in through the back door.",
+        "Will be there, even if they’re the only ones.",
+        "Will be coming, and they’ve already blocked off the whole night.",
+        "Will show up and be the heart of the event.",
+        "Will be coming because they wouldn't dream of being anywhere else.",
+        "Will be there to make sure everyone feels included.",
+        "Will be coming, and they’re bringing a surprise.",
+        "Will show up and be the one to keep the party going.",
+        "Will be coming because they value the invite.",
+        "Will be there to make sure you’re okay.",
+        "Will be coming, and is ready to let loose.",
+        "Will show up and be the one to start the deep conversations.",
+        "Will be coming because they need this as much as you do.",
+        "Will be there to make sure everyone has a good time.",
+        "Will be coming, and they’ve already told everyone else to come.",
+        "Will show up and become the most reliable person you know.",
+        "Will be coming because they’re a 'yes' person.",
+        "Will be there to make sure the plan actually happens.",
+        "Will be coming, and they’re bringing the fun.",
+        "Will show up and be the one everyone remembers.",
+        "Will be coming because they’re your biggest fan.",
+        "Will be there, and they’ll be the best part of the night.",
+        "Will be coming, and they’re ready for a legendary time.",
+        "Will show up and prove that some people actually care.",
+        "Will be coming. Believe it. It’s happening!",
       ],
     },
   },
   dragon: {
-    label: "Dragon",
+    label: "dragon",
     flakeChance: 0.8,
     useAI: true,
     responses: {
       flake: [
         "Dragon has found something shinier. You were never the priority.",
         "Dragon said yes. Dragon always says yes. Dragon is not coming.",
-        "The chaos energy is strong today. Dragon has exited the chat.",
-        "Dragon's schedule is a work of abstract fiction. Today is no exception.",
-        "Something caught Dragon's eye exactly 20 minutes before the plan. Classic.",
+        "Dragon has exited the chat.",
+        "Dragon's schedule leaves no room for fun. Today is no exception.",
+        "Something caught Dragon's eye. It's not your plans. Classic.",
       ],
       show: [
-        "Dragon is coming. This is a rare and sacred event. Treat it accordingly.",
-        "Against all known Dragon lore — they're actually showing up.",
-        "Dragon has committed. Do not question it. Do not mention their track record.",
-        "The oracle is as surprised as you are. Dragon is en route.",
+        "Dragon has committed. This is a rare and sacred event. Treat it accordingly.",
+        "Against all known Dragon lore — he's actually showing up.",
+        "Dragon is coming. Do not question it. Do not mention their track record.",
+        "The oracle is as surprised as you are. Dragon is coming.",
       ],
     },
   },
   queen: {
-    label: "Queen",
+    label: "queen",
     flakeChance: 0.2,
     useAI: true,
     responses: {
       flake: [
         "Even royalty cancels sometimes. This is one of those rare times.",
         "Queen has a conflict. A very important, very vague conflict.",
-        "The court has been cancelled. Rescheduling is not on the agenda.",
-        "Queen sends her regrets. And also her exact location, which is not here.",
+        "The Queens' court has been cancelled. Rescheduling is not on the agenda.",
+        "Queen sends her best wishes. You tried.",
       ],
       show: [
-        "Queen arrives. As expected. As always. The reliable one.",
-        "Queen confirmed, Queen committed, Queen is coming. Classic Queen.",
+        "Queen is on board. As expected. As always. The reliable one.",
+        "Queen will confirm, Queen is committed, Queen is coming. Classic Queen.",
         "Of course Queen is showing up. Did you really need to check?",
-        "Queen is already there, honestly. You're the one running late.",
-        "Queen has been ready for an hour. Longer than the plan has existed.",
+        "Queen will be there before you, honestly. You'be the one running late.",
+        "Queen has been ready. Longer than the plan has existed.",
       ],
     },
   },
   eddie: {
-    label: "Eddie",
+    label: "eddie",
     flakeChance: 0.5,
     useAI: true,
     responses: {
       flake: [
         "Eddie meant well. Eddie always means well. Eddie is not coming.",
-        "Eddie got halfway there and turned around. No explanation forthcoming.",
+        "The bestie is not coming. No explanation forthcoming.",
         "Eddie has entered a state of deep ambiguity. Interpret as needed.",
-        "Eddie's last known text was 'omw'. That was 40 minutes ago.",
         "The Eddie outcome was always uncertain. Today, the coin landed wrong.",
+        "Eddie's last known outing was enough. Don't count on him.",
       ],
       show: [
         "Eddie shows up. Surprising no one and everyone simultaneously.",
-        "Eddie is coming and he's bringing snacks. This is a good day.",
+        "Eddie is coming and he's bringing the fun. This is a good day.",
         "Eddie pulled through. The coin landed right. Cherish this.",
-        "Eddie confirmed three times and means it. All three times.",
+        "Eddie will confirm before you know it!.",
         "Eddie's here. Early, even. Something is different about today.",
       ],
     },
@@ -185,10 +444,8 @@ const verdictWord = document.getElementById("verdict-word");
 const outcomeText = document.getElementById("outcome-text");
 const tapBtn = document.getElementById("tap-btn");
 const resetBtn = document.getElementById("reset-btn");
-const personSelect = document.getElementById("person-select");
 const nameInput = document.getElementById("name-input");
 const eventInput = document.getElementById("event-input");
-const nameField = document.getElementById("name-field");
 const h1Name = document.getElementById("h1-name");
 const flakeNameTxt = document.getElementById("flake-name-text");
 
@@ -202,17 +459,45 @@ const FLAKE_PHRASES = [
   "notorious flake",
   "textbook flake",
   "irredeemable flake",
+  "habitual flake",
+  "professional flake",
+  "legendary flake",
+  "unapologetic flake",
+  "chronic flake",
+  "peak flake",
+  "elite flake",
+  "clearly a flake",
+  "unrivaled flake",
+  "pure flake",
+  "committed flake",
+  "recurring flake",
+  "predictable flake",
+  "master flake",
+  "shameless flake",
 ];
 
 const NO_FLAKE_PHRASES = [
   "not a flake",
   "flake-free",
   "zero flake energy",
-  "anti-flake",
-  "flake immunity confirmed",
+  "absolutely not a flake",
   "flake probability: zero",
   "surprisingly unflaky",
   "a non-flake, somehow",
+  "the anti-flake",
+  "flake-proof",
+  "genuinely not a flake",
+  "confirmed non-flake",
+  "the never flake",
+  "rare non-flake",
+  "flakeless wonder",
+  "solid, no-flake",
+  "verifiably non-flake",
+  "zero-percent flake",
+  "'never call me' flake",
+  "certified non-flake",
+  "mythical non-flake",
+  "reliable non-flake",
 ];
 
 function pickPhrase(isFlake) {
@@ -220,24 +505,19 @@ function pickPhrase(isFlake) {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-// ── Person dropdown logic ─────────────────────────────────────────────
+// ── Person logic ─────────────────────────────────────────────────────
+function getPerson() {
+  const name = nameInput.value.trim().toLowerCase();
+  return PEOPLE[name] ?? PEOPLE.friend;
+}
+
 function getDisplayName() {
-  const key = personSelect.value;
-  if (key === "friend") return nameInput.value.trim() || "my friend";
-  return PEOPLE[key].label.toLowerCase();
+  return nameInput.value.trim() || "my friend";
 }
 
-function onPersonChange() {
-  const isFriend = personSelect.value === "friend";
-  nameField.classList.toggle("hidden", !isFriend);
-  h1Name.textContent = getDisplayName();
-}
-
-personSelect.addEventListener("change", onPersonChange);
 nameInput.addEventListener("input", () => {
   h1Name.textContent = getDisplayName();
 });
-onPersonChange();
 
 // ── Helpers ───────────────────────────────────────────────────────────
 function pickVerdict(flakeChance) {
@@ -252,8 +532,11 @@ function pickStatic(person, verdict) {
 
 // ── Reveal ────────────────────────────────────────────────────────────
 async function reveal() {
-  const key = personSelect.value;
-  const person = PEOPLE[key];
+  if (!nameInput.value.trim()) {
+    nameInput.focus();
+    return;
+  }
+  const person = getPerson();
   const verdict = pickVerdict(person.flakeChance);
   const isFlake = verdict === "YES";
   const event = eventInput.value.trim();
@@ -329,6 +612,13 @@ function reset() {
     heroEl.style.animation = "";
   }, TRANSITION_MS);
 }
+
+document.querySelector(".sub").textContent =
+  instructions[Math.floor(Math.random() * instructions.length)];
+
+tapBtn.querySelector("span").textContent = window.matchMedia("(pointer: coarse)").matches
+  ? "tap me!"
+  : "click me!";
 
 tapBtn.addEventListener("click", reveal);
 resetBtn.addEventListener("click", reset);
