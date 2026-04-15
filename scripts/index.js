@@ -551,7 +551,7 @@ async function reveal() {
   forecasting.classList.add("visible");
 
   const minDelay = new Promise((res) =>
-    setTimeout(res, 2200 + Math.random() * 4500),
+    setTimeout(res, 3200 + Math.random() * 5500),
   );
 
   let flavorText = pickStatic(person, verdict);
@@ -641,7 +641,6 @@ function reset() {
     heroEl.style.animation = "";
   }, TRANSITION_MS);
 }
-
 
 tapBtn.querySelector("span").textContent = window.matchMedia(
   "(pointer: coarse)",
