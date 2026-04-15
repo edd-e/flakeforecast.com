@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════════════
 // SCREEN TRANSITIONS
 // ═══════════════════════════════════════════════════════════════════════
-const SCREENS = ["hero", "prophesying", "result"];
+const SCREENS = ["hero", "forecasting", "result"];
 const TRANSITION_MS = 320; // keep in sync with --transition-dur in CSS
 
 function showScreen(name) {
@@ -438,7 +438,7 @@ const PEOPLE = {
 
 // ── DOM ───────────────────────────────────────────────────────────────
 const heroEl = document.getElementById("hero");
-const prophesying = document.getElementById("prophesying");
+const forecasting = document.getElementById("forecasting");
 const resultEl = document.getElementById("result");
 const verdictWord = document.getElementById("verdict-word");
 const outcomeText = document.getElementById("outcome-text");
@@ -543,12 +543,14 @@ async function reveal() {
   const name = getDisplayName();
 
   // Transition to loading screen; trigger content animation
-  showScreen("prophesying");
-  prophesying.classList.remove("visible");
-  void prophesying.offsetWidth; // force reflow to re-run animation
-  prophesying.classList.add("visible");
+  showScreen("forecasting");
+  forecasting.classList.remove("visible");
+  void forecasting.offsetWidth; // force reflow to re-run animation
+  forecasting.classList.add("visible");
 
-  const minDelay = new Promise((res) => setTimeout(res, 2200));
+  const minDelay = new Promise((res) =>
+    setTimeout(res, 2200 + Math.random() * 4500),
+  );
 
   let flavorText = pickStatic(person, verdict);
 
@@ -616,15 +618,23 @@ function reset() {
 document.querySelector(".sub").textContent =
   instructions[Math.floor(Math.random() * instructions.length)];
 
-tapBtn.querySelector("span").textContent = window.matchMedia("(pointer: coarse)").matches
+tapBtn.querySelector("span").textContent = window.matchMedia(
+  "(pointer: coarse)",
+).matches
   ? "tap me!"
   : "click me!";
 
 tapBtn.addEventListener("click", reveal);
 resetBtn.addEventListener("click", reset);
+const screenHero = document.getElementById("screen-hero");
+const screenResult = document.getElementById("screen-result");
+
 eventInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") reveal();
+  if (e.key === "Enter" && screenHero.classList.contains("screen--active")) reveal();
 });
 nameInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") reveal();
+  if (e.key === "Enter" && screenHero.classList.contains("screen--active")) reveal();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && screenResult.classList.contains("screen--active")) reset();
 });

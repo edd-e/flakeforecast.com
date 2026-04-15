@@ -14,11 +14,6 @@
     <link rel="stylesheet" href="styles/styles.css" />
   </head>
   <body>
-    <div class="corner tl"></div>
-    <div class="corner tr"></div>
-    <div class="corner bl"></div>
-    <div class="corner br"></div>
-
     <div id="app">
       <!-- ═══════════════════════════════════════════════════════════════════
          SCREEN: HERO  (main)
@@ -43,7 +38,6 @@
 
               <h1>Will <em id="h1-name">my friend</em> flake?</h1>
 
-              <div class="rule"></div>
               <p class="sub">Check the social forecast.</p>
 
               <div class="input-row">
@@ -65,7 +59,7 @@
                     id="event-input"
                     type="text"
                     maxlength="80"
-                    placeholder="e.g. dinner outing"
+                    placeholder="e.g. Dinner"
                     autocomplete="off"
                     spellcheck="false"
                   />
@@ -73,7 +67,9 @@
               </div>
 
               <button id="tap-btn"><span>tap me!</span></button>
-              <p class="footer-note">powered by lived experience &amp; statistical certainty</p>
+              <p class="footer-note">
+                powered by lived experience &amp; statistical certainty
+              </p>
             </section>
           </div>
 
@@ -86,9 +82,9 @@
       <!-- /screen-hero -->
 
       <!-- ═══════════════════════════════════════════════════════════════════
-         SCREEN: PROPHESYING  (loading)
+         SCREEN: FORECASTING  (loading)
       ════════════════════════════════════════════════════════════════════ -->
-      <div class="screen" id="screen-prophesying">
+      <div class="screen" id="screen-forecasting">
         <div class="layout">
           <div class="cell--top-left"></div>
           <div class="cell--top-center"></div>
@@ -96,8 +92,8 @@
           <div class="cell--mid-left"></div>
 
           <div class="cell--main">
-            <section id="prophesying" aria-live="polite">
-              <div class="prophesy-label">Forecasting flakiness</div>
+            <section id="forecasting" aria-live="polite">
+              <div class="forecast-label">Forecasting flakiness</div>
               <div class="wave-dots">
                 <span></span><span></span><span></span><span></span
                 ><span></span>
@@ -111,7 +107,7 @@
           <div class="cell--bot-right"></div>
         </div>
       </div>
-      <!-- /screen-prophesying -->
+      <!-- /screen-forecasting -->
 
       <!-- ═══════════════════════════════════════════════════════════════════
          SCREEN: RESULT
