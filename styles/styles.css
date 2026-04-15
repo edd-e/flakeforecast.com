@@ -1,0 +1,702 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── TOKENS (unchanged) ─────────────────────────────────────────────── */
+:root {
+  --bg: #0c0c0e;
+  --surface: #141417;
+  --border: rgba(255, 255, 255, 0.07);
+  --text: #b8b4ac;
+  --muted: #7a7672;
+  --accent: #c9a84c;
+  --accent-dim: rgba(201, 168, 76, 0.15);
+  --yes: #3a1a1a;
+  --yes-text: #cf6f6f;
+  --no: #1a3a1a;
+  --no-text: #6fcf6f;
+  --transition: 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ── Grid sizing ─────────────────────────────────────────────────────
+         Side columns are fluid gutters; they collapse to 0 on narrow
+         viewports.  The center column holds the portrait content area.     */
+  --col-side: minmax(0, 1fr);
+  --col-center: minmax(0, 640px);
+
+  /* Screen-transition timing — keep in sync with JS TRANSITION_MS */
+  --transition-dur: 320ms;
+  --transition-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── BASE (unchanged) ──────────────────────────────────────────────── */
+html,
+body {
+  height: 100%; /* needed so the grid fills the viewport */
+  background: var(--bg);
+  color: var(--text);
+  font-family: "DM Mono", monospace;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    ellipse,
+    rgba(201, 168, 76, 0.06) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+       APP CONTAINER
+       Switched from flex-centering to a stacking context for the screens.
+    ══════════════════════════════════════════════════════════════════════ */
+#app {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+       SCREEN LAYER
+       All three screens occupy the same full-viewport slot (position:
+       absolute; inset: 0).  Only the active one is visible at a time.
+
+       State classes (toggled by showScreen() in JS):
+         .screen              → off-stage right  (hidden, enters from right)
+         .screen.screen--active → on-stage       (fully visible)
+         .screen.screen--exit   → off-stage left (fading out to the left)
+    ══════════════════════════════════════════════════════════════════════ */
+.screen {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateX(32px);
+  pointer-events: none;
+  transition:
+    opacity var(--transition-dur) var(--transition-ease),
+    transform var(--transition-dur) var(--transition-ease);
+}
+
+.screen.screen--active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.screen.screen--exit {
+  opacity: 0;
+  transform: translateX(-32px);
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+       TIC-TAC-TOE GRID LAYOUT
+       Every screen uses the same 3 × 3 grid.
+
+         Columns:  [gutter-left]  [content-center]  [gutter-right]
+         Rows:     [spacer-top]   [content-mid]     [spacer-bot]
+
+       The left/right gutter columns are decorative: they provide natural
+       whitespace on wide screens and collapse to 0 on mobile.
+       The center middle cell (.cell--main) hosts all visible content.
+    ══════════════════════════════════════════════════════════════════════ */
+.layout {
+  display: grid;
+  width: 100%;
+  height: 100%;
+
+  grid-template-columns: var(--col-side) var(--col-center) var(--col-side);
+  grid-template-rows: 1fr auto 1fr;
+
+  grid-template-areas:
+    "side-tl  top-center  side-tr"
+    "side-ml  main-cell   side-mr"
+    "side-bl  bot-center  side-br";
+}
+
+/* Side columns collapse on narrow viewports */
+@media (max-width: 480px) {
+  .layout {
+    grid-template-columns: 0 1fr 0;
+  }
+}
+
+/* Named cells — sides and top/bot-center are intentionally empty */
+.cell--top-left {
+  grid-area: side-tl;
+}
+.cell--top-center {
+  grid-area: top-center;
+}
+.cell--top-right {
+  grid-area: side-tr;
+}
+.cell--mid-left {
+  grid-area: side-ml;
+}
+.cell--mid-right {
+  grid-area: side-mr;
+}
+.cell--bot-left {
+  grid-area: side-bl;
+}
+.cell--bot-center {
+  grid-area: bot-center;
+}
+.cell--bot-right {
+  grid-area: side-br;
+}
+
+/* ── MAIN CONTENT CELL ─────────────────────────────────────────────────
+       Flexbox column; centres children vertically.  Add padding so content
+       never touches the viewport edge.  overflow-y: auto handles the rare
+       case where a long result would otherwise clip on short screens.      */
+.cell--main {
+  grid-area: main-cell;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  overflow-y: auto;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+       ALL CONTENT STYLES BELOW ARE UNCHANGED FROM THE ORIGINAL
+    ══════════════════════════════════════════════════════════════════════ */
+
+/* ── HERO ── */
+#hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  text-align: center;
+  width: 100%;
+  /* animation is re-triggered by JS on every reset */
+  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  padding: 6px 16px;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  white-space: nowrap;
+}
+
+.eyebrow-static {
+  flex-shrink: 0;
+}
+
+.word-slot {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  height: 1.2em;
+  vertical-align: middle;
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.word-slot-inner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  transform: translateY(110%);
+  opacity: 0;
+  transition: none;
+}
+
+.word-slot-inner.slot-in {
+  animation: slotIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.word-slot-inner.slot-out {
+  animation: slotOut 0.28s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@keyframes slotIn {
+  from {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes slotOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-110%);
+    opacity: 0;
+  }
+}
+
+h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2.6rem, 7vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.sub {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  font-weight: 300;
+  margin-top: -12px;
+}
+
+/* ── SELECT ── */
+.select-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+}
+
+.select-wrap::after {
+  content: "▾";
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent);
+  font-size: 12px;
+  pointer-events: none;
+}
+
+#person-select {
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.3);
+  color: var(--text);
+  font-family: "DM Mono", monospace;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 10px 24px 10px 0;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.3s;
+}
+
+#person-select:focus {
+  border-bottom-color: var(--accent);
+}
+
+#person-select option {
+  background: #1a1a1e;
+  color: var(--text);
+  letter-spacing: 0.1em;
+}
+
+/* ── INPUT ROW ── */
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  width: 100%;
+}
+
+@media (max-width: 520px) {
+  .input-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
+}
+
+.field.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+}
+
+.field label {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+.field input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.3);
+  color: var(--text);
+  font-family: "DM Mono", monospace;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  padding: 10px 0;
+  outline: none;
+  transition: border-color 0.3s;
+  caret-color: var(--accent);
+  width: 100%;
+}
+
+.field input::placeholder {
+  color: rgba(232, 228, 220, 0.2);
+}
+.field input:focus {
+  border-bottom-color: var(--accent);
+}
+
+/* ── BUTTON ── */
+#tap-btn {
+  position: relative;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: "DM Mono", monospace;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 18px 52px;
+  cursor: pointer;
+  outline: none;
+  transition:
+    color 0.2s,
+    transform 0.15s;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+#tap-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+}
+
+#tap-btn span {
+  position: relative;
+  z-index: 1;
+}
+#tap-btn:hover::before {
+  transform: scaleX(1);
+}
+#tap-btn:hover {
+  color: var(--bg);
+}
+#tap-btn:active {
+  transform: scale(0.97);
+}
+
+/* ── PROPHESYING ── */
+#prophesying {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+  /* Content animation is re-triggered by JS via class toggle */
+}
+
+#prophesying.visible {
+  animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.prophesy-label {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.6rem, 5vw, 2.8rem);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+.wave-dots {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.wave-dots span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: waveDot 1.2s ease-in-out infinite;
+}
+
+.wave-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+.wave-dots span:nth-child(2) {
+  animation-delay: 0.18s;
+}
+.wave-dots span:nth-child(3) {
+  animation-delay: 0.36s;
+}
+.wave-dots span:nth-child(4) {
+  animation-delay: 0.54s;
+}
+.wave-dots span:nth-child(5) {
+  animation-delay: 0.72s;
+}
+
+@keyframes waveDot {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translateY(-12px);
+    opacity: 1;
+  }
+}
+
+/* ── RESULT ── */
+#result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  text-align: center;
+  padding: 0 24px;
+}
+
+/* Content animation re-triggered by JS on each reveal */
+#result.visible {
+  animation: revealResult 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.verdict-label {
+  font-size: 30px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+/* Name — always visible; colour reflects verdict */
+.flake-name {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2.2rem, 8vw, 5rem);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  animation: flickerIn 0.6s ease both;
+}
+
+.flake-name.yes {
+  color: var(--yes-text);
+}
+.flake-name.no {
+  color: var(--no-text);
+}
+
+@keyframes flickerIn {
+  0% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  40% {
+    opacity: 0.6;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Verdict phrase — shorter text, italic Playfair */
+.verdict {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+.verdict.yes {
+  color: var(--yes-text);
+}
+.verdict.no {
+  color: var(--no-text);
+}
+
+.outcome-text {
+  font-size: clamp(14px, 2vw, 17px);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  line-height: 1.7;
+  max-width: 40ch;
+  opacity: 0.85;
+}
+
+#reset-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 8px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.2s;
+}
+
+#reset-btn:hover {
+  color: var(--text);
+}
+
+/* ── BACKGROUNDS ── */
+body.yes-bg {
+  background: var(--yes);
+}
+body.no-bg {
+  background: var(--no);
+}
+
+/* ── DIVIDER ── */
+.rule {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--border),
+    transparent
+  );
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes revealResult {
+  from {
+    opacity: 0;
+    transform: scale(0.93) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ── CORNERS ── */
+.corner {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  border-color: rgba(201, 168, 76, 0.12);
+  border-style: solid;
+  pointer-events: none;
+  z-index: 0;
+}
+.corner.tl {
+  top: 24px;
+  left: 24px;
+  border-width: 1px 0 0 1px;
+}
+.corner.tr {
+  top: 24px;
+  right: 24px;
+  border-width: 1px 1px 0 0;
+}
+.corner.bl {
+  bottom: 24px;
+  left: 24px;
+  border-width: 0 0 1px 1px;
+}
+.corner.br {
+  bottom: 24px;
+  right: 24px;
+  border-width: 0 1px 1px 0;
+}
+
+.footer-note {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: rgba(120, 118, 114, 0.6);
+  z-index: 1;
+  white-space: nowrap;
+}

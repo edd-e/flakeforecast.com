@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Will They Flake?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/normalize.css" />
+    <link rel="stylesheet" href="styles/styles.css" />
+  </head>
+  <body>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+
+    <div id="app">
+      <!-- ═══════════════════════════════════════════════════════════════════
+         SCREEN: HERO  (main)
+      ════════════════════════════════════════════════════════════════════ -->
+      <div class="screen screen--active" id="screen-hero">
+        <div class="layout">
+          <div class="cell--top-left"></div>
+          <div class="cell--top-center"></div>
+          <div class="cell--top-right"></div>
+          <div class="cell--mid-left"></div>
+
+          <div class="cell--main">
+            <section id="hero">
+              <span class="eyebrow">
+                <span class="eyebrow-static">Oracle of</span>
+                <span class="word-slot" id="word-slot">
+                  <span class="word-slot-inner" id="word-slot-inner"
+                    >Reliability</span
+                  >
+                </span>
+              </span>
+
+              <h1>Will <em id="h1-name">my friend</em> flake?</h1>
+
+              <div class="rule"></div>
+              <p class="sub">consult the oracle before making plans</p>
+
+              <div class="select-wrap">
+                <select id="person-select">
+                  <option value="friend">My Friend</option>
+                  <option value="dragon">Dragon</option>
+                  <option value="queen">Queen</option>
+                  <option value="eddie">Eddie</option>
+                </select>
+              </div>
+
+              <div class="input-row">
+                <div class="field" id="name-field">
+                  <label for="name-input">their name</label>
+                  <input
+                    id="name-input"
+                    type="text"
+                    maxlength="40"
+                    placeholder="e.g. Alex"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                </div>
+                <div class="field">
+                  <label for="event-input">the plan</label>
+                  <input
+                    id="event-input"
+                    type="text"
+                    maxlength="80"
+                    placeholder="e.g. beach outing"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                </div>
+              </div>
+
+              <button id="tap-btn"><span>tap me</span></button>
+            </section>
+          </div>
+
+          <div class="cell--mid-right"></div>
+          <div class="cell--bot-left"></div>
+          <div class="cell--bot-center"></div>
+          <div class="cell--bot-right"></div>
+        </div>
+      </div>
+      <!-- /screen-hero -->
+
+      <!-- ═══════════════════════════════════════════════════════════════════
+         SCREEN: PROPHESYING  (loading)
+      ════════════════════════════════════════════════════════════════════ -->
+      <div class="screen" id="screen-prophesying">
+        <div class="layout">
+          <div class="cell--top-left"></div>
+          <div class="cell--top-center"></div>
+          <div class="cell--top-right"></div>
+          <div class="cell--mid-left"></div>
+
+          <div class="cell--main">
+            <section id="prophesying" aria-live="polite">
+              <div class="prophesy-label">Forecasting flakiness</div>
+              <div class="wave-dots">
+                <span></span><span></span><span></span><span></span
+                ><span></span>
+              </div>
+            </section>
+          </div>
+
+          <div class="cell--mid-right"></div>
+          <div class="cell--bot-left"></div>
+          <div class="cell--bot-center"></div>
+          <div class="cell--bot-right"></div>
+        </div>
+      </div>
+      <!-- /screen-prophesying -->
+
+      <!-- ═══════════════════════════════════════════════════════════════════
+         SCREEN: RESULT
+      ════════════════════════════════════════════════════════════════════ -->
+      <div class="screen" id="screen-result">
+        <div class="layout">
+          <div class="cell--top-left"></div>
+          <div class="cell--top-center"></div>
+          <div class="cell--top-right"></div>
+          <div class="cell--mid-left"></div>
+
+          <div class="cell--main">
+            <section id="result" aria-live="polite">
+              <span class="verdict-label">The oracle decrees</span>
+              <div class="flake-name" id="flake-name-text"></div>
+              <div class="verdict" id="verdict-word"></div>
+              <p class="outcome-text" id="outcome-text"></p>
+              <button id="reset-btn">ask again</button>
+            </section>
+          </div>
+
+          <div class="cell--mid-right"></div>
+          <div class="cell--bot-left"></div>
+          <div class="cell--bot-center"></div>
+          <div class="cell--bot-right"></div>
+        </div>
+      </div>
+      <!-- /screen-result -->
+      <p class="footer-note">
+        powered by lived experience &amp; statistical certainty
+      </p>
+    </div>
+    <!-- /#app -->
+    <script type="text/javascript" src="scripts/index.js"></script>
+  </body>
+</html>
