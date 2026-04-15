@@ -8,17 +8,17 @@
 
 /* ── TOKENS (unchanged) ─────────────────────────────────────────────── */
 :root {
-  --bg: #0c0c0e;
-  --surface: #141417;
-  --border: rgba(255, 255, 255, 0.07);
-  --text: #b8b4ac;
-  --muted: #7a7672;
-  --accent: #c9a84c;
-  --accent-dim: rgba(201, 168, 76, 0.15);
-  --yes: #3a1a1a;
-  --yes-text: #cf6f6f;
-  --no: #1a3a1a;
-  --no-text: #6fcf6f;
+  --bg: #f5f0e8;
+  --surface: #ebe4d8;
+  --border: rgba(0, 0, 0, 0.08);
+  --text: #1e1a14;
+  --muted: #7a7268;
+  --accent: #9a7020;
+  --accent-dim: rgba(154, 112, 32, 0.12);
+  --flake-bg: #ffd9d5;
+  --yes-text: #8c2e2e;
+  --no-flake-bg: #d2f6d2;
+  --no-text: #2a6e30;
   --transition: 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 
   /* ── Grid sizing ─────────────────────────────────────────────────────
@@ -48,7 +48,7 @@ body::before {
   z-index: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.25;
 }
 
 body::after {
@@ -61,7 +61,7 @@ body::after {
   height: 600px;
   background: radial-gradient(
     ellipse,
-    rgba(201, 168, 76, 0.06) 0%,
+    rgba(154, 112, 32, 0.07) 0%,
     transparent 70%
   );
   pointer-events: none;
@@ -207,7 +207,7 @@ body::after {
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--accent);
-  border: 1px solid rgba(201, 168, 76, 0.25);
+  border: 1px solid rgba(154, 112, 32, 0.3);
   padding: 6px calc(16px - 0.3em) 6px 16px;
   border-radius: 2px;
   display: inline-flex;
@@ -327,7 +327,7 @@ h1 em {
 .field input {
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(201, 168, 76, 0.3);
+  border-bottom: 1px solid rgba(154, 112, 32, 0.3);
   color: var(--text);
   font-family: "DM Mono", monospace;
   font-size: 13px;
@@ -341,7 +341,7 @@ h1 em {
 }
 
 .field input::placeholder {
-  color: rgba(232, 228, 220, 0.2);
+  color: rgba(30, 26, 20, 0.3);
 }
 .field input:focus {
   border-bottom-color: var(--accent);
@@ -540,6 +540,20 @@ h1 em {
 }
 
 #reset-btn {
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.6s var(--transition-ease),
+    color 0.2s,
+    transform 0.15s;
+}
+
+#reset-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#reset-btn {
   position: relative;
   background: transparent;
   border: 1px solid var(--accent);
@@ -588,10 +602,10 @@ h1 em {
 
 /* ── BACKGROUNDS ── */
 body.yes-bg {
-  background: var(--yes);
+  background: var(--flake-bg);
 }
 body.no-bg {
-  background: var(--no);
+  background: var(--no-flake-bg);
 }
 
 /* ── ANIMATIONS ── */
@@ -633,7 +647,7 @@ body.no-bg {
   position: absolute;
   width: 60px;
   height: 60px;
-  border-color: rgba(201, 168, 76, 0.12);
+  border-color: rgba(154, 112, 32, 0.18);
   border-style: solid;
   pointer-events: none;
 }
@@ -665,7 +679,7 @@ body.no-bg {
 .footer-note {
   font-size: 10px;
   letter-spacing: 0.2em;
-  color: rgba(120, 118, 114, 0.6);
+  color: rgba(30, 26, 20, 0.4);
   text-align: center;
   max-width: calc(100vw - 48px);
 }

@@ -598,11 +598,15 @@ async function reveal() {
   resultEl.classList.remove("visible");
   void resultEl.offsetWidth; // force reflow to re-run animation
   resultEl.classList.add("visible");
+
+  resetBtn.classList.remove("visible");
+  setTimeout(() => resetBtn.classList.add("visible"), 3000);
 }
 
 // ── Reset ─────────────────────────────────────────────────────────────
 function reset() {
   resultEl.classList.remove("visible");
+  resetBtn.classList.remove("visible");
   document.body.classList.remove("yes-bg", "no-bg");
 
   showScreen("hero");
