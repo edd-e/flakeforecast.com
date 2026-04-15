@@ -661,14 +661,9 @@ body.no-bg {
 }
 
 .footer-note {
-  position: fixed;
-  bottom: 96px;
-  left: 50%;
-  transform: translateX(-50%);
   font-size: 10px;
   letter-spacing: 0.2em;
   color: rgba(120, 118, 114, 0.6);
-  z-index: 1;
   text-align: center;
   max-width: calc(100vw - 48px);
 }
