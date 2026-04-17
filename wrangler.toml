@@ -7,3 +7,6 @@ binding = "DB"
 database_name = "flake_forecasts"
 database_id = "2c6a0a1b-2f7c-4668-ac6a-6f5156bb7dcf"
 
+[ai]
+binding = "AI"
+
