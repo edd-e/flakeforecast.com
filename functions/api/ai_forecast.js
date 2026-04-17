@@ -49,15 +49,14 @@ export async function onRequestPost(context) {
     personalities[person] ?? "a person of uncertain reliability";
 
   const systemPrompt =
-    "You write punchy, dry one-liners. " +
-    "Never use quotation marks. Never explain yourself. " +
-    "Respond with ONLY the one-liner — no preamble, no sign-off, nothing else.";
+    "Your task is to comment on someone coming to (or avoiding) a social event. " +
+    "Take into account the event in the context of your final comment. Never use quotation marks. Never explain yourself. " +
+    "Respond with ONLY your comment — no preamble, no sign-off, nothing else." +
+    "Write a comment (max 20 words) explaining why that someone specifically will attend or skip the event. Be specific to the event, not generic.";
 
   const userPrompt = isFlake
-    ? `${person} (${personality}) was invited to "${event}" and is going to bail.
-Write ONE dry, witty sentence (max 15 words) explaining why ${person} specifically would skip this event. Be specific to the event, not generic.`
-    : `${person} (${personality}) was invited to "${event}" and is actually showing up.
-Write ONE dry, witty sentence (max 15 words) that fits ${person}'s character and reacts to them coming to this particular event.`;
+    ? `${person} (who is ${personality}) was invited to "${event}" and is going to bail.`
+    : `${person} (who is ${personality}) was invited to "${event}" and is actually showing up.`;
 
   try {
     const aiResponse = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
