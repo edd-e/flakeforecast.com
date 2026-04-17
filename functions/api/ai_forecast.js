@@ -35,7 +35,6 @@ export async function onRequestPost(context) {
   }
 
   // ── Per-person personalities ─────────────────────────────────────────────────
-  // Edit these freely to match how you actually know these people.
   const personalities = {
     Dragon:
       "chaotic, unreliable, always distracted by the next shiny thing (never malicious but chronically flaky)",
@@ -49,9 +48,9 @@ export async function onRequestPost(context) {
     personalities[person] ?? "a person of uncertain reliability";
 
   const systemPrompt =
-    "Your task is to comment on someone coming to (or avoiding) a social event. Take into account the event in the context of your final comment, it's preferable to be remain generic so that your comment is realistic. " +
-    "Never use quotation marks. Never explain yourself. Respond with ONLY your comment — no preamble, no sign-off, nothing else." +
-    "Write a comment (max 20 words) explaining why that someone will attend or skip the event.";
+    "Your task is to comment on someone attending (or avoiding) an upcoming and highly anticipated social event. " +
+    "The event must be referenced in your final comment (the reference can be explicit, implicit, factual, or anything as long as it makes contextual sense). " +
+    "Never use quotation marks. Never explain yourself. Respond with ONLY your comment — no preamble, no sign-off. Max 20 words";
 
   const userPrompt = isFlake
     ? `${person} (who is ${personality}) was invited to "${event}" and is going to bail.`
