@@ -36,11 +36,11 @@ export async function onRequestPost(context) {
 
   // ── Per-person personalities ─────────────────────────────────────────────────
   const personalities = {
-    Dragon:
+    dragon:
       "chaotic, unreliable, always distracted by the next shiny thing (never malicious but chronically flaky)",
-    Queen:
+    queen:
       "dependable, punctual, the most reliable person in any group (cancellations are genuinely rare)",
-    Eddie:
+    eddie:
       "well-meaning and enthusiastic but 50/50 on follow-through (loves the idea of plans more than executing them)",
   };
 

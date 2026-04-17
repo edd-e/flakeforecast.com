@@ -165,7 +165,7 @@ const PEOPLE = {
   friend: {
     label: "My Friend",
     flakeChance: 0.5,
-    useAI: false,
+    useAI: true,
     responses: {
       flake: [
         "Their phone is already on silent. They're not coming.",
