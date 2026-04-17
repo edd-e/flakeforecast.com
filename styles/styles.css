@@ -468,6 +468,17 @@ h1 em {
   padding: 0 24px;
 }
 
+/* Event title — shown immediately on result screen */
+.event-title {
+  font-family: "DM Mono", monospace;
+  font-size: clamp(0.85rem, 1.8vw, 1rem);
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.5em;
+}
+
 /* Name — typed in via JS */
 .flake-name {
   font-family: "Playfair Display", Georgia, serif;

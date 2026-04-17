@@ -448,6 +448,7 @@ const nameInput = document.getElementById("name-input");
 const eventInput = document.getElementById("event-input");
 const h1Name = document.getElementById("h1-name");
 const flakeNameTxt = document.getElementById("flake-name-text");
+const eventTitle = document.getElementById("event-title");
 
 // ── Verdict phrase pools ──────────────────────────────────────────────
 const FLAKE_PHRASES = [
@@ -639,6 +640,7 @@ async function reveal() {
   outcomeText.textContent = outcomeStr;
   outcomeText.classList.remove("visible");
 
+  eventTitle.textContent = event || "";
   flakeNameTxt.textContent = "";
   flakeNameTxt.className = "flake-name " + (isFlake ? "yes" : "no");
 
