@@ -521,13 +521,47 @@ nameInput.addEventListener("input", () => {
 
 // ── Helpers ───────────────────────────────────────────────────────────
 function pickVerdict(flakeChance) {
-  return Math.random() < flakeChance ? "YES" : "NO";
+  return Math.random() < flakeChance;
 }
 
-function pickStatic(person, verdict) {
-  const pool =
-    verdict === "YES" ? person.responses.flake : person.responses.show;
+function pickStatic(person, isFlake) {
+  const pool = isFlake ? person.responses.flake : person.responses.show;
   return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// ── DB helpers ────────────────────────────────────────────────────────
+function normalize(s) {
+  return s.toLowerCase().trim().replace(/\s+/g, " ");
+}
+
+async function dbLookup(name, event) {
+  try {
+    const res = await fetch("/api/db/lookup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: normalize(name),
+        event: normalize(event),
+      }),
+    });
+    if (res.ok) return await res.json(); // { found, verdict, outcomeText }
+  } catch (_) {}
+  return { found: false };
+}
+
+function dbSave(name, event, isFlake, verdictPhrase, outcomeText) {
+  // Fire-and-forget — never blocks the UI
+  fetch("/api/db/save", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: normalize(name),
+      event: normalize(event),
+      isFlake,
+      verdictPhrase,
+      outcomeText,
+    }),
+  }).catch(() => {});
 }
 
 // ── Reveal ────────────────────────────────────────────────────────────
@@ -537,58 +571,72 @@ async function reveal() {
     return;
   }
   const person = getPerson();
-  const verdict = pickVerdict(person.flakeChance);
-  const isFlake = verdict === "YES";
   const event = eventInput.value.trim();
   const name = getDisplayName();
 
-  // Transition to loading screen; trigger content animation
+  // Show forecasting screen immediately
   document.querySelector(".forecast-label").textContent =
     forecastingLabels[Math.floor(Math.random() * forecastingLabels.length)];
   showScreen("forecasting");
   forecasting.classList.remove("visible");
-  void forecasting.offsetWidth; // force reflow to re-run animation
+  void forecasting.offsetWidth;
   forecasting.classList.add("visible");
 
   const minDelay = new Promise((res) =>
     setTimeout(res, 3200 + Math.random() * 5500),
   );
 
-  let flavorText = pickStatic(person, verdict);
+  // ── DB lookup runs concurrently with the min delay ──────────────────
+  let isFlake, verdictPhrase, outcomeStr;
+  const cached = event
+    ? (await Promise.all([dbLookup(name, event), minDelay]))[0]
+    : null;
 
-  const aiCall =
-    person.useAI && event
-      ? (async () => {
-          const token =
-            new URLSearchParams(window.location.search).get("t") ?? "";
-          try {
-            const res = await fetch("/api/prophecy", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                event,
-                verdict,
-                person: person.label,
-                token,
-              }),
-            });
-            if (res.ok) {
-              const data = await res.json();
-              if (data.text) flavorText = data.text;
-            }
-          } catch (_) {
-            /* fall back to static */
-          }
-        })()
-      : Promise.resolve();
+  if (cached?.found) {
+    // Cache hit — use stored result, min delay already satisfied
+    isFlake = cached.isFlake;
+    verdictPhrase = cached.verdictPhrase;
+    outcomeStr = cached.outcomeText;
+  } else {
+    // Cache miss — generate normally
+    isFlake = pickVerdict(person.flakeChance);
+    outcomeStr = pickStatic(person, isFlake);
 
-  await Promise.all([aiCall, minDelay]);
+    const aiCall =
+      person.useAI && event
+        ? (async () => {
+            try {
+              const res = await fetch("/api/ai_forecast", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  event,
+                  isFlake,
+                  person: person.label,
+                }),
+              });
+              if (res.ok) {
+                const data = await res.json();
+                if (data.text) outcomeStr = data.text;
+              }
+            } catch (_) {}
+          })()
+        : Promise.resolve();
 
-  // Populate result content — name typed, rest sequential
-  verdictWord.textContent = pickPhrase(isFlake);
+    // If no event was entered, min delay hasn't been awaited yet
+    await Promise.all([aiCall, ...(event ? [] : [minDelay])]);
+
+    verdictPhrase = pickPhrase(isFlake);
+
+    // Persist result for future lookups (fire-and-forget)
+    if (event) dbSave(name, event, isFlake, verdictPhrase, outcomeStr);
+  }
+
+  // ── Populate & reveal result ────────────────────────────────────────
+  verdictWord.textContent = verdictPhrase;
   verdictWord.className = "verdict " + (isFlake ? "yes" : "no");
   verdictWord.classList.remove("visible");
-  outcomeText.textContent = flavorText;
+  outcomeText.textContent = outcomeStr;
   outcomeText.classList.remove("visible");
 
   flakeNameTxt.textContent = "";
@@ -598,7 +646,6 @@ async function reveal() {
 
   showScreen("result");
 
-  // Typewrite the name, then chain the remaining elements
   let i = 0;
   const typeNext = () => {
     if (i < name.length) {
