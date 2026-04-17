@@ -49,10 +49,9 @@ export async function onRequestPost(context) {
     personalities[person] ?? "a person of uncertain reliability";
 
   const systemPrompt =
-    "Your task is to comment on someone coming to (or avoiding) a social event. " +
-    "Take into account the event in the context of your final comment. Never use quotation marks. Never explain yourself. " +
-    "Respond with ONLY your comment — no preamble, no sign-off, nothing else." +
-    "Write a comment (max 20 words) explaining why that someone specifically will attend or skip the event. Be specific to the event, not generic.";
+    "Your task is to comment on someone coming to (or avoiding) a social event. Take into account the event in the context of your final comment, it's preferable to be remain generic so that your comment is realistic. " +
+    "Never use quotation marks. Never explain yourself. Respond with ONLY your comment — no preamble, no sign-off, nothing else." +
+    "Write a comment (max 20 words) explaining why that someone will attend or skip the event.";
 
   const userPrompt = isFlake
     ? `${person} (who is ${personality}) was invited to "${event}" and is going to bail.`
