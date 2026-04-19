@@ -498,11 +498,13 @@ h1 em {
 }
 
 /* Verdict phrase — shorter text, italic Playfair */
+.event-title,
 .verdict,
 .outcome-text {
   opacity: 0;
 }
 
+.event-title.visible,
 .verdict.visible,
 .outcome-text.visible {
   opacity: 1;

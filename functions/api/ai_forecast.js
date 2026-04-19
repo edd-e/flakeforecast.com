@@ -1,13 +1,6 @@
 /**
  * Cloudflare Pages Function — /api/ai_forecast
  * POST body: { name: string, event: string, isFlake: boolean }
- *
- * ── SETUP (Cloudflare Dashboard, one-time) ────────────────────────────────────
- *
- * 1. AI Binding
- *    Pages → Settings → Functions → AI Bindings
- *    Variable name : AI
- *    Service       : Workers AI
  */
 
 export async function onRequestPost(context) {
