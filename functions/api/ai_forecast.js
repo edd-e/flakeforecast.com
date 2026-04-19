@@ -1,6 +1,6 @@
 /**
  * Cloudflare Pages Function — /api/ai_forecast
- * POST body: { event: string, isFlake: boolean, person: string, token: string }
+ * POST body: { name: string, event: string, isFlake: boolean }
  *
  * ── SETUP (Cloudflare Dashboard, one-time) ────────────────────────────────────
  *
