@@ -49,15 +49,27 @@ export async function onRequestPost(context) {
 
   const systemPrompt = `Your task is to comment on someone attending (or avoiding) an UPCOMING social event.
     STRICT RULES:
-    1. Use FUTURE TENSE only (e.g., 'will', 'is going to'): the event has not happened yet.
-    2. Only refer to the person by name: do not assume gender, do not use pronouns.
-    2. Reference or acknowledge the event: affirming attendance should be enthusiastic while excuses can be anywhere from typical to humorous.
-    3. No quotation marks, no preamble, and no sign-off.
-    4. Maximum 20 words.`;
+    1. Use FUTURE TENSE only (e.g., 'will', 'is going to').
+    2. Only refer to the person by name: do not use pronouns.
+    3. You must integrate persons name and the event naturally into the sentence; your comment should sound like natural speech.
+    4. No quotation marks, no preamble, and no sign-off.
+    5. Maximum 20 words.`;
 
   const userPrompt = isFlake
-    ? `Context: A friend named ${name} (${personality}) is bailing on ${event}.`
-    : `Context: A friend named ${name} (${personality}) is actually attending ${event}.`;
+    ? `Here is the context; Name: "${name}" Personality: "${personality}" Plan: "Is flaking" Event: "${event}". Write a humorous excuse.`
+    : `Here is the context; Name: "${name}" Personality: "${personality}" Plan: "Is actually going" Event: "${event}". Write an enthusiastic comment.`;
+
+  // const systemPrompt = `Your task is to comment on someone attending (or avoiding) an UPCOMING social event.
+  //   STRICT RULES:
+  //   1. Use FUTURE TENSE only (e.g., 'will', 'is going to'): the event has not happened yet.
+  //   2. Only refer to the person by name: do not assume gender, do not use pronouns.
+  //   2. Reference or acknowledge the event: affirming attendance should be enthusiastic while excuses can be anywhere from typical to humorous.
+  //   3. No quotation marks, no preamble, and no sign-off.
+  //   4. Maximum 20 words.`;
+
+  // const userPrompt = isFlake
+  //   ? `Context: A friend named ${name} (${personality}) is bailing on ${event}.`
+  //   : `Context: A friend named ${name} (${personality}) is actually attending ${event}.`;
 
   // const systemPrompt =
   //   "Your task is to comment on someone attending (or avoiding) an upcoming and highly anticipated social event. " +
