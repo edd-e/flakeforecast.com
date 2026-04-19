@@ -47,14 +47,27 @@ export async function onRequestPost(context) {
   const personality =
     personalities[person] ?? "a person of uncertain reliability";
 
-  const systemPrompt =
-    "Your task is to comment on someone attending (or avoiding) an upcoming and highly anticipated social event. " +
-    "The event must be referenced in your final comment (the reference can be explicit, implicit, factual, or anything as long as it makes contextual sense). " +
-    "Never use quotation marks. Never explain yourself. Respond with ONLY your comment — no preamble, no sign-off. Max 20 words";
+  const systemPrompt = `You are a social commentator. Write about the provided person's attendance.
+    STRICT RULES:
+    1. Use 'they/them' pronouns or the person's name exclusively.
+    2. Reference the event naturally.
+    3. No quotation marks, no preamble, no explanations, no sign-off.
+    4. Maximum 20 words.
+    5. Ensure the tone matches the person's personality.`;
 
   const userPrompt = isFlake
-    ? `${person} (who is ${personality}) was invited to "${event}" and is going to bail.`
-    : `${person} (who is ${personality}) was invited to "${event}" and is actually showing up.`;
+    ? `Context: A friend named ${person} (${personality}) is bailing on ${event}.`
+    : `Context: A friend named ${person} (${personality}) is actually attending ${event}.`;
+
+  // const systemPrompt =
+  //   "Your task is to comment on someone attending (or avoiding) an upcoming and highly anticipated social event. " +
+  //   "The event must be referenced in your final comment and make sense contextually. " +
+  //   "Try to avoid using 'he/she' pronouns, if you must use their name use it in the third person. " +
+  //   "Never use quotation marks. Never explain yourself. Respond with ONLY your comment — no preamble, no sign-off. Max 20 words. Here is your context: ";
+
+  // const userPrompt = isFlake
+  //   ? `A friend named ${person} (who is ${personality}) was invited to "${event}" and is going to bail.`
+  //   : `A friend named ${person} (who is ${personality}) was invited to "${event}" and is actually showing up.`;
 
   try {
     const aiResponse = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
