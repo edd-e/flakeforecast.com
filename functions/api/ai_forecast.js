@@ -56,8 +56,8 @@ export async function onRequestPost(context) {
     5. Maximum 20 words.`;
 
   const userPrompt = isFlake
-    ? `Context; Name: "${name}", Personality: "${personality}", Plan/Event: "${event}", Attending: "Yes". Write a humorous excuse.`
-    : `Context; Name: "${name}", Personality: "${personality}", Plan/Event: "${event}", Attending: "No". Write an enthusiastic comment.`;
+    ? `Context; Name: "${name}", Personality: "${personality}", Plan/Event: "${event}", Attending: "No". Write a humorous excuse.`
+    : `Context; Name: "${name}", Personality: "${personality}", Plan/Event: "${event}", Attending: "Yes". Write an enthusiastic comment.`;
 
   // const systemPrompt = `Your task is to comment on someone attending (or avoiding) an UPCOMING social event.
   //   STRICT RULES:
