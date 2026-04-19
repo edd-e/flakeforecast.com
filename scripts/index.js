@@ -158,7 +158,6 @@ const forecastingLabels = [
 // ═══════════════════════════════════════════════════════════════════════
 const PEOPLE = {
   friend: {
-    label: "My Friend",
     flakeChance: 0.5,
     useAI: true,
     responses: {
@@ -369,7 +368,6 @@ const PEOPLE = {
     },
   },
   dragon: {
-    label: "dragon",
     flakeChance: 0.8,
     useAI: true,
     responses: {
@@ -389,7 +387,6 @@ const PEOPLE = {
     },
   },
   queen: {
-    label: "queen",
     flakeChance: 0.2,
     useAI: true,
     responses: {
@@ -409,7 +406,6 @@ const PEOPLE = {
     },
   },
   eddie: {
-    label: "eddie",
     flakeChance: 0.5,
     useAI: true,
     responses: {
@@ -551,7 +547,7 @@ function pickPhrase(isFlake) {
 }
 
 // ── Person logic ─────────────────────────────────────────────────────
-function getPerson() {
+function getPersonName() {
   const name = nameInput.value.trim().toLowerCase();
   return PEOPLE[name] ?? PEOPLE.friend;
 }
@@ -615,7 +611,7 @@ async function reveal() {
     nameInput.focus();
     return;
   }
-  const person = getPerson();
+  const person = getPersonName();
   const event = eventInput.value.trim();
   const name = getDisplayName();
 
@@ -655,9 +651,9 @@ async function reveal() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
+                  name,
                   event,
                   isFlake,
-                  person: person.label,
                 }),
               });
               if (res.ok) {

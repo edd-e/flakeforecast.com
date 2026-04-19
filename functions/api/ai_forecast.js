@@ -23,14 +23,14 @@ export async function onRequestPost(context) {
     );
   }
 
-  let person, event, isFlake;
+  let name, event, isFlake;
   try {
-    ({ event, isFlake, person } = await request.json());
+    ({ name, event, isFlake } = await request.json());
   } catch {
     return json({ error: "Invalid JSON body." }, 400);
   }
 
-  if (!event || isFlake == null || !person) {
+  if (!name || !event || isFlake == null) {
     return json({ error: "Missing required fields." }, 400);
   }
 
@@ -45,19 +45,19 @@ export async function onRequestPost(context) {
   };
 
   const personality =
-    personalities[person] ?? "a person of uncertain reliability";
+    personalities[name.toLowerCase()] ?? "a person of uncertain reliability";
 
-  const systemPrompt = `You are a social commentator. Write about the provided person's attendance.
+  const systemPrompt = `Your task is to comment on someone attending (or avoiding) an UPCOMING social event.
     STRICT RULES:
-    1. Use 'they/them' pronouns or the person's name exclusively.
+    1. Use FUTURE TENSE only (e.g., 'will', 'is going to'). The event has not happened yet.
+    2. Use 'they/them' pronouns or the name; do not assume gender.
     2. Reference the event naturally.
-    3. No quotation marks, no preamble, no explanations, no sign-off.
-    4. Maximum 20 words.
-    5. Ensure the tone matches the person's personality.`;
+    3. No quotation marks, no preamble, no explanations, and no sign-off.
+    4. Maximum 20 words.`;
 
   const userPrompt = isFlake
-    ? `Context: A friend named ${person} (${personality}) is bailing on ${event}.`
-    : `Context: A friend named ${person} (${personality}) is actually attending ${event}.`;
+    ? `Context: A friend named ${name} (${personality}) is bailing on ${event}.`
+    : `Context: A friend named ${name} (${personality}) is actually attending ${event}.`;
 
   // const systemPrompt =
   //   "Your task is to comment on someone attending (or avoiding) an upcoming and highly anticipated social event. " +
@@ -66,8 +66,8 @@ export async function onRequestPost(context) {
   //   "Never use quotation marks. Never explain yourself. Respond with ONLY your comment — no preamble, no sign-off. Max 20 words. Here is your context: ";
 
   // const userPrompt = isFlake
-  //   ? `A friend named ${person} (who is ${personality}) was invited to "${event}" and is going to bail.`
-  //   : `A friend named ${person} (who is ${personality}) was invited to "${event}" and is actually showing up.`;
+  //   ? `A friend named ${name} (who is ${personality}) was invited to "${event}" and is going to bail.`
+  //   : `A friend named ${name} (who is ${personality}) was invited to "${event}" and is actually showing up.`;
 
   try {
     const aiResponse = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
