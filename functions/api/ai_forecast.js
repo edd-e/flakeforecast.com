@@ -51,8 +51,8 @@ export async function onRequestPost(context) {
     STRICT RULES:
     1. Use FUTURE TENSE only (e.g., 'will', 'is going to'): the event has not happened yet.
     2. Only refer to the person by name: do not assume gender, do not use pronouns.
-    2. Reference the event naturally; affirming attendance should be enthusiastic while excuses should be anywhere from typical to humorously outlandish.
-    3. No quotation marks, no preamble, no explanations, and no sign-off.
+    2. Reference or acknowledge the event: affirming attendance should be enthusiastic while excuses can be anywhere from typical to humorous.
+    3. No quotation marks, no preamble, and no sign-off.
     4. Maximum 20 words.`;
 
   const userPrompt = isFlake
