@@ -49,9 +49,9 @@ export async function onRequestPost(context) {
 
   const systemPrompt = `Your task is to comment on someone attending (or avoiding) an UPCOMING social event.
     STRICT RULES:
-    1. Use FUTURE TENSE only (e.g., 'will', 'is going to'). The event has not happened yet.
-    2. Use 'they/them' pronouns or the name; do not assume gender.
-    2. Reference the event naturally.
+    1. Use FUTURE TENSE only (e.g., 'will', 'is going to'): the event has not happened yet.
+    2. Only refer to the person by name: do not assume gender, do not use pronouns.
+    2. Reference the event naturally; affirming attendance should be enthusiastic while providing excuses should be anywhere from typical to humorously outlandish.
     3. No quotation marks, no preamble, no explanations, and no sign-off.
     4. Maximum 20 words.`;
 
