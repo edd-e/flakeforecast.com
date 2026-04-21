@@ -435,15 +435,17 @@ function cycleWord() {
   eyebrowIdx = (eyebrowIdx + 1) % STRINGS.eyebrow.length;
   const next = STRINGS.eyebrow[eyebrowIdx];
   wordSlot.style.width = measureWord(next) + "px";
-  wordInner.classList.remove("word-slot-inner--visible");
+  wordInner.classList.remove("slot-in");
+  wordInner.classList.add("slot-out");
   setTimeout(() => {
     wordInner.textContent = next;
-    wordInner.classList.add("word-slot-inner--visible");
-  }, 300);
+    wordInner.classList.remove("slot-out");
+    wordInner.classList.add("slot-in");
+  }, 280);
 }
 
 wordSlot.style.width = measureWord(wordInner.textContent) + "px";
-wordInner.classList.add("word-slot-inner--visible");
+wordInner.classList.add("slot-in");
 setInterval(cycleWord, 2200);
 
 // DOM
