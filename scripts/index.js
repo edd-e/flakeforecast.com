@@ -552,12 +552,11 @@ async function reveal() {
     setTimeout(res, 3200 + Math.random() * 5500),
   );
 
-  // DB lookup runs concurrently with the min delay
   let isFlake, verdictPhrase, outcomeStr;
   const cached = event ? await dbLookup(name, event) : null;
 
   if (cached?.found) {
-    // Cache hit — skip min delay, go straight to results
+    await new Promise((res) => setTimeout(res, 2500));
     isFlake = cached.isFlake;
     verdictPhrase = cached.verdictPhrase;
     outcomeStr = cached.outcomeText;
